@@ -11,7 +11,7 @@ public class IntLinkedList {
 	}
 	
 	public int getSize () {
-		throw new UnsupportedOperationException();
+		return size;
 	}
 	
 	public void prepend (int item) {
