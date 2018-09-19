@@ -35,9 +35,10 @@ public class IntList {
         }
     }
    
-    
-     // Expands the size of the list whenever it is at
-     // capacity
+    /*
+     * Expands the size of the list whenever it is at
+     * capacity
+     */
     private void checkAndGrow () {
         // Case: big enough to fit another item, so no
         // need to grow
@@ -69,6 +70,11 @@ public class IntList {
             items[i] = items[i+1];
         }
     }
+    
+    /*
+     * Shifts all elements to the right of the given
+     * index one right
+     */
     private void shiftRight (int index) {
     	indexValidityCheck(index);
         checkAndGrow();
@@ -77,16 +83,25 @@ public class IntList {
         }
     }
    
+    /*
+     * Adds the given int toAdd to the first position in the IntList
+     */
     public void prepend (int toAdd) {
         insertAt(toAdd, 0);
     }
    
+    /*
+     * Inserts the given int toAdd at the specified index within the IntList
+     */
     public void insertAt (int toAdd, int index) {
         shiftRight(index);
         items[index] = toAdd;
         size++;
     }
    
+    /*
+     * Removes all instances of the given int toRemove in the IntList
+     */
     public void removeAll (int toRemove) {
         for (int i = 0; i < size; i++) {
         	if (items[i] == toRemove) {
@@ -96,6 +111,9 @@ public class IntList {
         }
     }
     
+    /*
+     * Prints all elements in the IntList to the console for debugging purposes
+     */
     public void printIntList () {
     	System.out.print("[ ");
     	for (int i = 0; i < size; i++) {
@@ -105,22 +123,29 @@ public class IntList {
     	return;
     }
    
+    /*
+     * Used to test methods
+     */
     public static void main(String[] args) {
         IntList inty = new IntList();
         for (int i = 0; i < 5; i++) {
                 inty.append(i);
         }
         
+        // Check constructor
         inty.printIntList();
         
+        // Check prepend method
         inty.prepend(5);
         inty.printIntList();
         
+        // Check insertAt method
         inty.insertAt(5, 3);
         inty.insertAt(5, 3);
         inty.insertAt(5, 3);
         inty.printIntList();
         
+        // Check removeAll method
         inty.removeAll(5);
         inty.printIntList();
     }
