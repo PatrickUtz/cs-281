@@ -38,7 +38,23 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     }
     
     public boolean collect (String toAdd) {
-        throw new UnsupportedOperationException();
+    	
+    	checkAndGrow();
+        if (toAdd.equals("Dampymon") || toAdd.equals("Burnymon") 
+        		|| toAdd.equals("Zappymon")) {
+        	
+        	for (int i = 0; i < size; i++) {
+        		if (collection[i].type.equals(toAdd)) {
+        			collection[i].count++;
+        			return true;
+        		}
+        	}
+        	
+        	collection[size-1] = new ForneymonType(toAdd, 1);
+        	return true;
+        }
+        
+        return false;
     }
     
     public boolean release (String toRemove) {
@@ -89,6 +105,31 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     // ----------------------------------------------------------
     
     // TODO: Add yours here!
+
+    /*
+     * Expands the size of the collection whenever it is at
+     * capacity
+     */
+    private void checkAndGrow () {
+        // Case: big enough to fit another item, so no
+        // need to grow
+        if (size < collection.length) {
+            return;
+        }
+       
+        // Case: we're at capacity and need to grow
+        // Step 1: create new, bigger array; we'll
+        // double the size of the old one
+        ForneymonType[] newItems = new ForneymonType[collection.length * 2];
+       
+        // Step 2: copy the items from the old array
+        for (int i = 0; i < collection.length; i++) {
+            newItems[i] = collection[i];
+        }
+       
+        // Step 3: update collection reference
+        collection = newItems;
+    }
     
     // Private Classes
     // ----------------------------------------------------------
