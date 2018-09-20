@@ -12,21 +12,29 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     
     // Constructor
     // ----------------------------------------------------------
-    Forneymonegerie () {}
+    Forneymonegerie () {
+    	collection = new ForneymonType[START_SIZE];
+    	size = 0;
+    	typeSize = 0;
+    }
     
     
     // Methods
     // ----------------------------------------------------------
     public boolean empty () {
-        throw new UnsupportedOperationException();
+        if (size == 0) {
+        	return true;
+        } else {
+        	return false;
+        }
     }
     
     public int size () {
-        throw new UnsupportedOperationException();
+        return size;
     }
     
     public int typeSize () {
-        throw new UnsupportedOperationException();
+        return typeSize;
     }
     
     public boolean collect (String toAdd) {
