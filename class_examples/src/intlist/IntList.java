@@ -1,5 +1,12 @@
 package intlist;
 
+/*
+ * Name: IntList
+ * Authors: Patrick Utz / Jeremy Goldberg / Matt Stein
+ * Date: 9/20/2018
+ * Description: Provides a more usable "array" to be used to store ints
+ */
+
 public class IntList {
  
     // Fields
