@@ -38,39 +38,70 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     }
     
     public boolean collect (String toAdd) {
-    	
     	checkAndGrow();
-        if (toAdd.equals("Dampymon") || toAdd.equals("Burnymon") 
-        		|| toAdd.equals("Zappymon")) {
+    	size++;
+        for (int i = 0; i < typeSize; i++) {
+       		if (collection[i] != null && collection[i].type.equals(toAdd)) {
+       			collection[i].count++;
+       			return false;
+       		}
+       	}
         	
-        	for (int i = 0; i < size; i++) {
-        		if (collection[i].type.equals(toAdd)) {
-        			collection[i].count++;
-        			return true;
-        		}
-        	}
-        	
-        	collection[size-1] = new ForneymonType(toAdd, 1);
-        	return true;
-        }
-        
-        return false;
+       	collection[typeSize] = new ForneymonType(toAdd, 1);
+       	typeSize++;
+       	return true;
     }
     
-    public boolean release (String toRemove) {
-        throw new UnsupportedOperationException();
+    public boolean release (String typeToRelease) {
+    	// check first if the type is in the collection
+    	if (contains(typeToRelease)) {
+    		for (int i = 0; i < typeSize; i++) {
+    			if (collection[i].type.equals(typeToRelease)) {
+    				// check if there is more than one Forneymon of that type left
+    				if (collection[i].count > 1) {
+    					collection[i].count--;
+    					size--;
+    					return true;
+    				} else {
+    					// if there is only one Forneymon of that type just get 
+    					// rid of that type in the overall collection
+    					releaseType(typeToRelease);
+    					return true;
+    				}
+    			}
+    		}
+    	}
+    	return false;
     }
     
     public void releaseType (String toNuke) {
-        throw new UnsupportedOperationException();
+    	if (contains(toNuke)) {
+    		int typeIndex = returnTypeIndex(toNuke);
+    		size = size - collection[typeIndex].count;
+    		for (int i = typeIndex; i < typeSize-1; i++) {
+                collection[i] = collection[i+1];
+            }
+    		collection[typeSize-1] = null;
+    		typeSize--;
+    	}
+    	return;
     }
     
     public int countType (String toCount) {
-        throw new UnsupportedOperationException();
+    	if (contains(toCount)) {
+    		return collection[returnTypeIndex(toCount)].count;
+    	}
+    	// ***** CHECK WHAT SHOULD RETURN IF ELSE *****
+    	return 0;
     }
     
     public boolean contains (String toCheck) {
-        throw new UnsupportedOperationException();
+    	for (int i = 0; i < typeSize; i++) {
+    		if (collection[i] != null && collection[i].type.equals(toCheck)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     public String nth (int n) {
@@ -113,7 +144,7 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     private void checkAndGrow () {
         // Case: big enough to fit another item, so no
         // need to grow
-        if (size < collection.length) {
+        if (typeSize < collection.length) {
             return;
         }
        
@@ -129,6 +160,21 @@ public class Forneymonegerie implements ForneymonegerieInterface {
        
         // Step 3: update collection reference
         collection = newItems;
+    }
+    
+    /*
+     * Returns the index in the collection of ForneymonTypes of the respective
+     * type that is handed to the method. Returns 0 if type not found
+     */
+    private int returnTypeIndex (String typeToSearch) {
+    	for (int i = 0; i < typeSize; i++) {
+    		if (collection[i] != null && collection[i].type.equals(typeToSearch)) {
+    			return i;
+    		} else {
+    			return 0;
+    		}
+    	}
+    	return 0;
     }
     
     // Private Classes

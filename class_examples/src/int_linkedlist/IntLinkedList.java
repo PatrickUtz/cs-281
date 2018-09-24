@@ -21,6 +21,27 @@ public class IntLinkedList {
 		size++;
 	}
 	
+	public void removeAt (int index) {
+		Node current = head,
+				prev = null;
+		
+		// Find the Node to remove, making sure to
+		// record keep its predecessor
+		while (current != null && index > 0) {
+			prev = current;
+			current = current.next;
+			index--;
+		}
+		
+		// Remove the Node and account for edge
+		// cases
+		if (current == null) {return;}
+		// Case: removing head
+		if (current == head) {head = head.next;}
+		// Case removing inner Node
+		if (prev != null) {prev.next = current.next;}
+	}
+	
 	public Iterator getIteratorAt (int index) {
 		if (index > size || index <0) {
 			throw new IllegalArgumentException();
