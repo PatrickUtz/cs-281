@@ -105,7 +105,20 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     }
     
     public String nth (int n) {
-        throw new UnsupportedOperationException();
+    	// check first to see if argument is within current size
+    	if (n < 0 || n > size) {
+    		throw new IllegalArgumentException();
+    	}
+    	// fine the type of the nth Forneymon
+    	int currentNth = 0;
+    	for (int i = 0; i < typeSize; i++) {
+    		currentNth = currentNth + collection[i].count; 
+    		if (n < currentNth) {
+    			return collection[i].type;
+    		}
+    	}
+    	// return null if nth Forneymon not found 
+    	return null;
     }
     
     public String rarestType () {
@@ -170,9 +183,7 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	for (int i = 0; i < typeSize; i++) {
     		if (collection[i] != null && collection[i].type.equals(typeToSearch)) {
     			return i;
-    		} else {
-    			return 0;
-    		}
+    		} 
     	}
     	return 0;
     }
