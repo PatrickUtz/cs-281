@@ -25,12 +25,23 @@ public class ForneymonegerieTests {
     // =================================================
     
     @Test
+    public void testEmpty() {
+    	fm.collect("Dampymon"); // added tests
+    	assertEquals(false, fm.empty());
+    	Forneymonegerie fm2 = new Forneymonegerie();
+    	assertEquals(true, fm2.empty());
+    }
+    
+    @Test
     public void testSize() {
         fm.collect("Dampymon");
         fm.collect("Dampymon");
         assertEquals(2, fm.size());
         fm.collect("Burnymon");
         assertEquals(3, fm.size());
+        fm.collect("Utzmon"); // added tests
+        fm.collect("Utzmon");
+        assertEquals(5, fm.size());
     }
 
     @Test
@@ -40,6 +51,11 @@ public class ForneymonegerieTests {
         assertEquals(1, fm.typeSize());
         fm.collect("Burnymon");
         assertEquals(2, fm.typeSize());
+        fm.collect("Dampymon"); // added tests
+        fm.collect("Utzmon");
+        fm.collect("Utzmon");
+        assertEquals(3, fm.typeSize());
+         
     }
 
     @Test
@@ -49,6 +65,8 @@ public class ForneymonegerieTests {
         fm.collect("Burnymon");
         assertTrue(fm.contains("Dampymon"));
         assertTrue(fm.contains("Burnymon"));
+        assertFalse(fm.collect("Dampymon")); // added tests
+        assertTrue(fm.collect("Utzmon"));
     }
 
     @Test
@@ -60,6 +78,10 @@ public class ForneymonegerieTests {
         fm.release("Dampymon");
         assertEquals(1, fm.size());
         assertEquals(1, fm.typeSize());
+        fm.collect("Dampymon"); // added tests
+        assertEquals(true, fm.release("Dampymon"));
+        assertEquals(true, fm.release("Dampymon"));
+        assertEquals(false, fm.release("Dampymon"));
     }
 
     @Test
@@ -72,6 +94,10 @@ public class ForneymonegerieTests {
         fm.releaseType("Dampymon");
         assertEquals(1, fm.size());
         assertEquals(1, fm.typeSize());
+        fm.collect("Utzmon"); // added tests
+        fm.releaseType("Utzmon");
+        assertEquals(1, fm.size());
+        assertEquals(1, fm.typeSize());
     }
 
     @Test
@@ -82,6 +108,11 @@ public class ForneymonegerieTests {
         assertEquals(2, fm.countType("Dampymon"));
         assertEquals(1, fm.countType("Burnymon"));
         assertEquals(0, fm.countType("forneymon"));
+        fm.collect("Utzmon"); // added tests
+        fm.collect("Utzmon");
+        fm.collect("Utzmon");
+        assertEquals(3, fm.countType("Utzmon"));
+        
     }
 
     @Test
@@ -92,6 +123,9 @@ public class ForneymonegerieTests {
         assertTrue(fm.contains("Dampymon"));
         assertTrue(fm.contains("Burnymon"));
         assertFalse(fm.contains("forneymon"));
+        fm.collect("Utzmon"); // added tests
+        assertTrue(fm.contains("Utzmon"));
+        assertFalse(fm.contains("lalagaga"));
     }
 
     @Test
@@ -104,6 +138,10 @@ public class ForneymonegerieTests {
         assertEquals("Dampymon", fm.nth(1));
         assertEquals("Burnymon", fm.nth(2));
         assertEquals("Zappymon", fm.nth(3));
+        fm.collect("Zappymon"); // added tests
+        fm.collect("Utzmon");
+        assertEquals("Zappymon", fm.nth(4));
+        assertEquals("Utzmon", fm.nth(5));
     }
 
     @Test
@@ -114,6 +152,9 @@ public class ForneymonegerieTests {
         assertEquals("Zappymon", fm.rarestType());
         fm.collect("Zappymon");
         assertEquals("Zappymon", fm.rarestType());
+        fm.releaseType("Dampymon"); // added tests
+        fm.releaseType("Zappymon");
+        assertEquals(null, fm.rarestType());
     }
 
     @Test

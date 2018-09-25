@@ -21,6 +21,10 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     
     // Methods
     // ----------------------------------------------------------
+    
+    /*
+     * Returns true if the Forneymonegerie has no Forneymon inside, false otherwise
+     */ 
     public boolean empty () {
         if (size == 0) {
         	return true;
@@ -29,14 +33,24 @@ public class Forneymonegerie implements ForneymonegerieInterface {
         }
     }
     
+    /*
+     * Returns the current size of the Forneymonegerie
+     */
     public int size () {
         return size;
     }
     
+    /*
+     * Returns the number of unique Forneymon types in the Forneymonegerie
+     */
     public int typeSize () {
         return typeSize;
     }
     
+    /*
+     * Adds the Forneymon type indicated by typeToAdd to the Forneymonegerie
+     * Returns true if the typeAdded was not already in the Forneymonegerie, false otherwise
+     */
     public boolean collect (String toAdd) {
     	checkAndGrow();
     	size++;
@@ -45,13 +59,16 @@ public class Forneymonegerie implements ForneymonegerieInterface {
        			collection[i].count++;
        			return false;
        		}
-       	}
-        	
+       	}  	
        	collection[typeSize] = new ForneymonType(toAdd, 1);
        	typeSize++;
        	return true;
     }
     
+    /*
+     * Removes 1 Forneymon of the given typeToRelease from the Forneymonegerie, and returns 
+     * true if at least 1 was removed this way, false otherwise
+     */
     public boolean release (String typeToRelease) {
     	// check first if the type is in the collection
     	if (contains(typeToRelease)) {
@@ -70,10 +87,15 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     				}
     			}
     		}
+    		return false;
+    	} else {
+    		return false;
     	}
-    	return false;
     }
     
+    /*
+     * Removes ALL Forneymon of the given typeToNuke from the Forneymonegerie 
+     */
     public void releaseType (String toNuke) {
     	if (contains(toNuke)) {
     		int typeIndex = returnTypeIndex(toNuke);
@@ -87,14 +109,19 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	return;
     }
     
+    /*
+     * Return the number of Forneymon of the given typeToCount found in the Forneymonegerie 
+     */
     public int countType (String toCount) {
     	if (contains(toCount)) {
     		return collection[returnTypeIndex(toCount)].count;
     	}
-    	// ***** CHECK WHAT SHOULD RETURN IF ELSE *****
     	return 0;
     }
     
+    /*
+     * Returns true if the given typeToCheck appears at least once inside of the Forneymonegerie
+     */
     public boolean contains (String toCheck) {
     	for (int i = 0; i < typeSize; i++) {
     		if (collection[i] != null && collection[i].type.equals(toCheck)) {
@@ -104,12 +131,15 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	return false;
     }
     
+    /*
+     * Returns type of nth Forneymon
+     */
     public String nth (int n) {
     	// check first to see if argument is within current size
     	if (n < 0 || n > size) {
     		throw new IllegalArgumentException();
     	}
-    	// fine the type of the nth Forneymon
+    	// find the type of the nth Forneymon
     	int currentNth = 0;
     	for (int i = 0; i < typeSize; i++) {
     		currentNth = currentNth + collection[i].count; 
@@ -121,6 +151,9 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	return null;
     }
     
+    /*
+     * Returns the ForneymonType that occurs least frequently in the Forneymonegerie
+     */
     public String rarestType () {
     	if (empty()) {
     		return null;
@@ -206,7 +239,20 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     }
     
     public static boolean sameCollection (Forneymonegerie y1, Forneymonegerie y2) {
-        throw new UnsupportedOperationException();
+    	int trackNumberOfTypes = 0;
+    	for (int i = 0; i < y1.typeSize; i++) {
+    		for (int j = 0; j < y2.typeSize; j++) {
+    			if (y1.collection[i].type.equals(y2.collection[j].type) &&
+    					y1.collection[i].count == y2.collection[j].count) {
+    				trackNumberOfTypes++;
+    				break;
+    			}
+    		}
+    	}
+    	if ((trackNumberOfTypes == y1.typeSize) && (trackNumberOfTypes == y2.typeSize)) {
+    		return true;
+    	}
+    	return false;
     }
     
    
