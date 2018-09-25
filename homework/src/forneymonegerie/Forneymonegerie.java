@@ -122,22 +122,87 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     }
     
     public String rarestType () {
-        throw new UnsupportedOperationException();
+    	if (empty()) {
+    		return null;
+    	}
+    	int rarestCount = collection[0].count;
+    	int rarestTypeIndex = 0;
+    	for (int i = 1; i < typeSize; i++) {
+    		if (collection[i].count <= rarestCount) {
+    			rarestCount = collection[i].count;
+    			rarestTypeIndex = i;
+    		}
+    	}
+    	return collection[rarestTypeIndex].type;
     }
     
     public Forneymonegerie clone () {
-        throw new UnsupportedOperationException();
+    	Forneymonegerie clone = new Forneymonegerie();
+    	clone.size = size;
+    	clone.typeSize = typeSize;
+    	for (int i = 0; i < typeSize; i++) {
+    		int countCurrent = collection[i].count;
+    		String typeToAdd = collection[i].type;
+    		for (int j = 0; j < countCurrent; j++) {
+    			clone.collect(typeToAdd);
+    		}
+    	}
+    	return clone;
     }
     
     public void trade (Forneymonegerie other) {
-        throw new UnsupportedOperationException();
+    	Forneymonegerie placeHolder = new Forneymonegerie();
+    	placeHolder.collection = collection;
+    	placeHolder.size = size;
+    	placeHolder.typeSize = typeSize;
+    	collection = other.collection;
+    	size = other.size;
+    	typeSize = other.typeSize;
+    	other.collection = placeHolder.collection;
+    	other.size = placeHolder.size;
+    	other.typeSize = placeHolder.typeSize;
     }
     
+    public String toString () {
+    	String outputCollection = "[";
+    	for (int i = 0; i < typeSize; i++) {
+    		if (i < typeSize-1) {
+    			outputCollection = outputCollection + " \"" + collection[i].type + 
+        				"\": " + collection[i].count + ",";
+    		} else {
+    			outputCollection = outputCollection + " \"" + collection[i].type + 
+        				"\": " + collection[i].count + " ]";
+    		}
+    	}
+    	return outputCollection;
+    }
     
     // Static methods
     // ----------------------------------------------------------
     public static Forneymonegerie diffMon (Forneymonegerie y1, Forneymonegerie y2) {
-        throw new UnsupportedOperationException();
+    	Forneymonegerie diffMonegerie = new Forneymonegerie();
+    	// iterate through each type in y1
+    	for (int i = 0; i < y1.typeSize; i++) {
+    		for (int j = 0; j < y2.typeSize; j++) {
+    			// compare each type in y1 to y2
+    			if (y1.collection[i].type.equals(y2.collection[j].type) && 
+    					(y1.collection[i].count == y2.collection[j].count)) {
+    				break;
+    			} else if ((y1.collection[i].type.equals(y2.collection[j].type)) &&
+    					 (y1.collection[i].count-y2.collection[j].count > 0)) {
+    				for (int k = 0; k < y1.collection[i].count-y2.collection[j].count; k++) {
+    					diffMonegerie.collect(y1.collection[i].type);
+    				}
+    				break;
+    			} else {
+    				for (int k = 0; k < y1.collection[i].count; k++) {
+        				diffMonegerie.collect(y1.collection[i].type);
+    				}
+    				break;
+    			}
+    		}
+    	}
+    	return diffMonegerie;
     }
     
     public static boolean sameCollection (Forneymonegerie y1, Forneymonegerie y2) {
@@ -187,7 +252,7 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	}
     	return 0;
     }
-    
+        
     // Private Classes
     // ----------------------------------------------------------
     private class ForneymonType {
