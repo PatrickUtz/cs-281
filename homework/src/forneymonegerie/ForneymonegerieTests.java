@@ -167,6 +167,12 @@ public class ForneymonegerieTests {
         assertEquals(dolly.countType("Burnymon"), 1);
         dolly.collect("Zappymon");
         assertFalse(fm.contains("Zappymon"));
+        fm.collect("Utzmon"); // added tests
+        Forneymonegerie Patrick = fm.clone();
+        assertTrue(fm.contains("Utzmon"));
+        assertTrue(Patrick.contains("Utzmon"));
+        fm.release("Utzmon");
+        assertTrue(Patrick.contains("Utzmon"));
     }
 
     @Test
@@ -184,6 +190,19 @@ public class ForneymonegerieTests {
         assertTrue(fm2.contains("Dampymon"));
         assertTrue(fm2.contains("Burnymon"));
         assertFalse(fm1.contains("Dampymon"));
+        Forneymonegerie patrick = new Forneymonegerie(); // added tests
+        patrick.collect("Utzmon");
+        patrick.trade(fm1);
+        assertTrue(patrick.contains("Leafymon"));
+        assertTrue(fm1.contains("Utzmon"));
+    }
+    
+    @Test
+    public void testToString() { // added tests
+    	fm.collect("Utzmon");
+    	fm.collect("Yoyomon");
+    	fm.collect("Yoyomon");
+    	assertEquals("[ \"Utzmon\": 1, \"Yoyomon\": 2 ]", fm.toString());
     }
 
     @Test
@@ -202,6 +221,15 @@ public class ForneymonegerieTests {
         fm3.collect("Leafymon");
         assertFalse(fm1.contains("Leafymon"));
         assertFalse(fm2.contains("Leafymon"));
+        fm1.collect("Utzmon"); // added tests
+        fm1.collect("Utzmon");
+        fm2.collect("Utzmon");
+        Forneymonegerie fm4 = Forneymonegerie.diffMon(fm1, fm2);
+        assertEquals(fm4.countType("Dampymon"), 1);
+        assertEquals(fm4.countType("Burnymon"), 1);
+        assertEquals(fm4.countType("Utzmon"), 1);
+        assertFalse(fm4.contains("Zappymon"));
+        
     }
 
     @Test
@@ -218,6 +246,12 @@ public class ForneymonegerieTests {
         assertTrue(Forneymonegerie.sameCollection(fm2, fm1));
         fm2.collect("Leafymon");
         assertFalse(Forneymonegerie.sameCollection(fm1, fm2));
+        fm1.collect("Utzmon"); // added tests
+        fm2.collect("Patrickmon");
+        assertFalse(Forneymonegerie.sameCollection(fm1, fm2));
+        fm2.collect("Utzmon");
+        fm1.collect("Patrickmon");
+        fm1.collect("Leafymon");
+        assertTrue(Forneymonegerie.sameCollection(fm1, fm2));
     }
-
 }

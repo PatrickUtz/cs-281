@@ -169,6 +169,9 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	return collection[rarestTypeIndex].type;
     }
     
+    /*
+     * Returns a deep copy of this Forneymonegerie
+     */
     public Forneymonegerie clone () {
     	Forneymonegerie clone = new Forneymonegerie();
     	clone.size = size;
@@ -183,6 +186,9 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	return clone;
     }
     
+    /*
+     * Swaps the contents of the calling Forneymonegerie and the other specified
+     */
     public void trade (Forneymonegerie other) {
     	Forneymonegerie placeHolder = new Forneymonegerie();
     	placeHolder.collection = collection;
@@ -196,6 +202,9 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	other.typeSize = placeHolder.typeSize;
     }
     
+    /*
+     * toString representation of the current Forneymonegerie
+     */
     public String toString () {
     	String outputCollection = "[";
     	for (int i = 0; i < typeSize; i++) {
@@ -212,6 +221,11 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     
     // Static methods
     // ----------------------------------------------------------
+    
+    /*
+     * Returns a *new* Forneymonegerie object consisting of all Forneymon from y1 that 
+     * do NOT appear in y2
+     */
     public static Forneymonegerie diffMon (Forneymonegerie y1, Forneymonegerie y2) {
     	Forneymonegerie diffMonegerie = new Forneymonegerie();
     	// iterate through each type in y1
@@ -227,7 +241,7 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     					diffMonegerie.collect(y1.collection[i].type);
     				}
     				break;
-    			} else {
+    			} else if (j == y2.typeSize-1) {
     				for (int k = 0; k < y1.collection[i].count; k++) {
         				diffMonegerie.collect(y1.collection[i].type);
     				}
@@ -238,6 +252,10 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	return diffMonegerie;
     }
     
+    /*
+     * Returns true if y1 and y2 contain the exact same ForneymonTypes and number of Forneymon
+     * in each type, though in any collection order
+     */
     public static boolean sameCollection (Forneymonegerie y1, Forneymonegerie y2) {
     	int trackNumberOfTypes = 0;
     	for (int i = 0; i < y1.typeSize; i++) {
