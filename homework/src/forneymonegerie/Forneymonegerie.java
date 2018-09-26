@@ -1,5 +1,13 @@
 package forneymonegerie;
 
+/*
+ * Name: Forneymonegerie
+ * Author: Patrick Utz 
+ * Date: 9/28/2018
+ * Description: A happy medium between arrays and sets of Strings used to model all of the 
+ * different types of Forneymon in a user's collection.
+ */
+
 public class Forneymonegerie implements ForneymonegerieInterface {
 
     // Fields
@@ -230,17 +238,21 @@ public class Forneymonegerie implements ForneymonegerieInterface {
     	Forneymonegerie diffMonegerie = new Forneymonegerie();
     	// iterate through each type in y1
     	for (int i = 0; i < y1.typeSize; i++) {
+    		// compare type i from y1 to each type in y2
     		for (int j = 0; j < y2.typeSize; j++) {
-    			// compare each type in y1 to y2
+    			// check if type and count are the same
     			if (y1.collection[i].type.equals(y2.collection[j].type) && 
     					(y1.collection[i].count == y2.collection[j].count)) {
     				break;
+    				   // check if type is the same and y1 has more Forneymon than 
+    				   // y2 of that type
     			} else if ((y1.collection[i].type.equals(y2.collection[j].type)) &&
     					 (y1.collection[i].count-y2.collection[j].count > 0)) {
     				for (int k = 0; k < y1.collection[i].count-y2.collection[j].count; k++) {
     					diffMonegerie.collect(y1.collection[i].type);
     				}
     				break;
+    				   // check if the types are different and finished indexing y2 types 
     			} else if (j == y2.typeSize-1) {
     				for (int k = 0; k < y1.collection[i].count; k++) {
         				diffMonegerie.collect(y1.collection[i].type);

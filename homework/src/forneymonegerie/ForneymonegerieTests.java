@@ -1,5 +1,12 @@
 package forneymonegerie;
 
+/*
+ * Name: ForneymonegerieTests
+ * Author: Patrick Utz 
+ * Date: 9/28/2018
+ * Description: A junit class used to test the Forneymonegerie class
+ */
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
