@@ -1,3 +1,13 @@
+/*
+* Name: WebNavigator
+* Authors: Patrick Utz / Jeremy Goldberg / Matt Stein
+* Date: 9/27/2018
+* Description: Emulates web browser navigation suite that can be used to (1) visit sites,
+*  (2) return users to previously visited sites, and (3) move forward to previously visited 
+*  sites that were returned from (just like how you (1) visit sites on a browser and can (2)
+*   hit the back button or (3) hit the forward button).
+*/
+
 package web_nav;
 
 // TODO: Choose imports based on DS choice
@@ -8,15 +18,14 @@ public class WebNavigator {
 
     // Fields
     private String current; // Tracks currently visited site
-    // TODO: You choose the fields!
-    // Any you want to add! Keep them private!
-    private LinkedList<String> pageTracker;
+    private LinkedList<String> pageCurrent; 
+    private LinkedList<String> forwardHistory;
     
     // Constructor
     WebNavigator () {
-        // TODO: Initialize your new fields in constructor
         current = null;
-        pageTracker = new LinkedList<String> ();
+        pageCurrent = new LinkedList<String> ();
+        forwardHistory = new LinkedList<String> ();
     }
     
     // Methods
@@ -53,7 +62,9 @@ public class WebNavigator {
      *  and records the visited site in the back history
      */
     public void visit (String site) {
-        pageTracker.add(site);
+    	pageCurrent.push(site);
+    	forwardHistory = new LinkedList<String> ();
+        current = pageCurrent.getFirst();
     }
     
     /*
@@ -61,11 +72,23 @@ public class WebNavigator {
      *  visited in the order on which visit was called on it
      */
     public void back () {
-        // TODO
+    	// check if there is no previous website to go back to
+        if (pageCurrent.size() < 2) {
+        	return;
+        }
+        forwardHistory.push(pageCurrent.getFirst());
+    	pageCurrent.poll();
+        current = pageCurrent.getFirst();
     }
     
     public void forw () {
-        // TODO
+    	// check if there is no forward website to go to
+    	if (forwardHistory.size() < 1) {
+    		return;
+    	}
+    	pageCurrent.push(forwardHistory.getFirst());
+    	forwardHistory.poll();
+        current = pageCurrent.getFirst();
     }
     
     public static void main(String[] args) {
