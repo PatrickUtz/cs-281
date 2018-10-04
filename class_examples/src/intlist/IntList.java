@@ -7,7 +7,7 @@ package intlist;
  * Description: Provides a more usable "array" to be used to store ints
  */
 
-public class IntList {
+public class IntList implements IntListInterface {
  
     // Fields
     private int[] items;
