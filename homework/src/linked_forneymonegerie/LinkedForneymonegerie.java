@@ -48,7 +48,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         
         size++;
         ForneymonType typeToAdd = getType(toAdd);
-        if (typeToAdd != null) {
+        if (checkNotNull(typeToAdd)) {
         	typeToAdd.count++;
         	return false;
         } else {
@@ -64,7 +64,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     public boolean release (String toRemove) {
     	modCount++;
     	ForneymonType typeToRelease = getType(toRemove);
-    	if (typeToRelease != null) {
+    	if (checkNotNull(typeToRelease)) {
     		if (typeToRelease.count == 1) {
     			releaseType(toRemove);
     		} else {
@@ -79,7 +79,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     public void releaseType (String toNuke) {
     	modCount++;
     	ForneymonType typeToNuke = getType(toNuke);
-    	if (typeToNuke != null) {
+    	if (checkNotNull(typeToNuke)) {
     		typeSize--;
     		size = size - typeToNuke.count;
     		remove(typeToNuke);
@@ -89,14 +89,14 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     
     public int countType (String toCount) {
     	ForneymonType typeToCount = getType(toCount);
-    	if (typeToCount != null) {
+    	if (checkNotNull(typeToCount)) {
     		return typeToCount.count;
     	}
     	return 0;
     }
     
     public boolean contains (String toCheck) {
-        if (getType(toCheck) != null) {
+        if (checkNotNull(getType(toCheck))) {
         	return true;
         }
         return false;
@@ -106,7 +106,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	ForneymonType current = head;
     	String rarest = null;
         int rarestCount = current.count;
-        while (current != null) {
+        while (checkNotNull(current)) {
         	if (current.count <= rarestCount) {
         		rarest = current.type;
         		rarestCount = current.count;
@@ -121,7 +121,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	ForneymonType current = head;
     	ForneymonType cloneCurrent = null;
     	ForneymonType clonePrev = null;
-    	while (current != null) {
+    	while (checkNotNull(current)) {
     		if (clone.head == null) {
     			clone.head = new ForneymonType(head.type, head.count);
     			cloneCurrent = clone.head;
@@ -160,11 +160,23 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     
     @Override
     public String toString() {
-    	throw new UnsupportedOperationException();
+    	String[] result = new String[typeSize];
+    	ForneymonType current = head;
+    	int i = 0;
+    	while (checkNotNull(current)) {
+    		result[i] = "\"" + current.type + "\": " + current.count;
+    		current = current.next;
+        	i++;
+    	}
+    	return "[ " + String.join(", ", result) + " ]";
     }
     
     public LinkedForneymonegerie.Iterator getIterator () {
-        throw new UnsupportedOperationException();
+        if (empty()) {
+        	throw new IllegalStateException();
+        } else {
+        	return new Iterator(this);
+        }
     }
     
     
@@ -173,11 +185,17 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     // -----------------------------------------------------------
     
     public static LinkedForneymonegerie diffMon (LinkedForneymonegerie y1, LinkedForneymonegerie y2) {
-        throw new UnsupportedOperationException();
+    	LinkedForneymonegerie result = y1.clone();
+    	ForneymonType current = y2.head;
+    	while(y2.checkNotNull(current)) {
+    		result.releaseMany(current.type, current.count);
+    		current = current.next;
+    	}
+    	return result;
     }
     
     public static boolean sameCollection (LinkedForneymonegerie y1, LinkedForneymonegerie y2) {
-        throw new UnsupportedOperationException();
+    	return diffMon(y1, y2).empty() && y1.size == y2.size && y1.typeSize == y2.typeSize;
     }
     
     // Private helper methods
@@ -199,6 +217,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return null;
     }
     
+    private boolean checkNotNull (ForneymonType typeToCheck) {
+    	return typeToCheck != null; 
+    }
+    
     private void remove (ForneymonType toRemove) {
     	if (toRemove == head) {
     		if (head.next != null) {
@@ -215,6 +237,18 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     		toRemove.next.prev = toRemove.prev;
     	}
     	return;
+    }
+    
+    private void releaseMany (String toRemove, int countToRemove) {
+    	ForneymonType typeToRelease = getType(toRemove);
+    	if (checkNotNull(typeToRelease)) {
+    		if (typeToRelease.count == countToRemove) {
+    			releaseType(toRemove);
+    		} else {
+    			typeToRelease.count -= countToRemove;
+    			size -= countToRemove;
+    		}
+    	}
     }
     
     private boolean isEnd (ForneymonType toCheck) {
@@ -239,38 +273,86 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     public class Iterator implements LinkedForneymonegerieIteratorInterface {
         LinkedForneymonegerie owner;
         ForneymonType current;
+        int currentCountIndex;
         int itModCount;
         
         Iterator (LinkedForneymonegerie y) {
-            // TODO
+        	owner = y;
+        	current = owner.head;
+        	currentCountIndex = 1;
+        	itModCount = owner.modCount;
         }
         
         public boolean hasNext () {
-            throw new UnsupportedOperationException();
+        	if (!isValid()) {
+        		return false;
+        	} else if ((current.count > currentCountIndex) || (current.next != null)) {
+        		return true;
+        	} else {
+                return false;
+        	}
         }
         
         public boolean hasPrev () {
-            throw new UnsupportedOperationException();
+        	if (!isValid()) {
+        		return false;
+        	} else if ((current.count > 1) || (current.prev != null)) {
+        		return true;
+        	} else {
+                return false;
+        	}
         }
         
         public boolean isValid () {
-            throw new UnsupportedOperationException();
+            return itModCount == owner.modCount;
         }
         
         public String getType () {
-            throw new UnsupportedOperationException();
+        	if (!isValid()) {
+        		return null;
+        	} else {
+        		return current.type;
+        	}
         }
 
         public void next () {
-            throw new UnsupportedOperationException();
+            if (!isValid()) {
+            	throw new IllegalStateException();
+            } else if (hasNext()) {
+            	if (currentCountIndex < current.count) {
+            		currentCountIndex++;
+            	} else {
+            		current = current.next;
+            		currentCountIndex = 1;
+            	}
+            } else {
+            	throw new NoSuchElementException();
+            }
         }
         
         public void prev () {
-            throw new UnsupportedOperationException();
+        	if (!isValid()) {
+            	throw new IllegalStateException();
+            } else if (hasPrev()) {
+            	if (currentCountIndex > 1) {
+            		currentCountIndex--;
+            	} else {
+            		current = current.prev;
+            		currentCountIndex = current.count;
+            	}
+            } else {
+            	throw new NoSuchElementException();
+            }
         }
         
         public void replaceAll (String toReplaceWith) {
-            throw new UnsupportedOperationException();
+            if (!isValid()) {
+            	throw new IllegalStateException();
+            } else {
+            	itModCount++;
+            	owner.modCount++;
+            	current.type = toReplaceWith;
+            }
         }
         
     }
@@ -285,5 +367,4 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
             count = c;
         }
     }
-    
 }
