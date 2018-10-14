@@ -138,6 +138,10 @@ public class LinkedForneymonegerieTests {
         assertEquals(dolly.countType("Burnymon"), 1);
         dolly.collect("Zappymon");
         assertFalse(fm.contains("Zappymon"));
+        assertTrue(dolly.contains("Zappymon")); // added tests start here
+        fm.release("Dampymon");
+        assertEquals(fm.countType("Dampymon"), 1);
+        assertEquals(dolly.countType("Dampymon"), 2);
     }
 
     @Test
@@ -155,6 +159,10 @@ public class LinkedForneymonegerieTests {
         assertTrue(fm2.contains("Dampymon"));
         assertTrue(fm2.contains("Burnymon"));
         assertFalse(fm1.contains("Dampymon"));
+        assertEquals(2, fm1.size()); // added tests start here
+        assertEquals(3, fm2.size());
+        assertEquals(2, fm1.typeSize());
+        assertEquals(2, fm2.typeSize());
     }
 
     @Test
@@ -173,6 +181,10 @@ public class LinkedForneymonegerieTests {
         fm3.collect("Leafymon");
         assertFalse(fm1.contains("Leafymon"));
         assertFalse(fm2.contains("Leafymon"));
+        fm2.collect("Dampymon"); // added tests start here
+        fm3 = LinkedForneymonegerie.diffMon(fm1, fm2);
+        assertFalse(fm3.contains("Dampymon"));
+        assertTrue(fm3.contains("Burnymon"));
     }
 
     @Test
@@ -189,6 +201,9 @@ public class LinkedForneymonegerieTests {
         assertTrue(LinkedForneymonegerie.sameCollection(fm2, fm1));
         fm2.collect("Leafymon");
         assertFalse(LinkedForneymonegerie.sameCollection(fm1, fm2));
+        fm1.collect("Leafymon"); // added tests start here
+        assertTrue(LinkedForneymonegerie.sameCollection(fm1, fm2));
+        assertTrue(LinkedForneymonegerie.sameCollection(fm2, fm1));
     }
     
     @Test
@@ -230,6 +245,37 @@ public class LinkedForneymonegerieTests {
         
         fm.collect("Cooliomon");
         assertFalse(it.isValid());
+        
+        // Added tests start here. Check the isValid() some more
+        it = fm.getIterator(); 
+        assertTrue(it.isValid());
+        fm.release("Baddymon");
+        assertFalse(it.isValid());
+        
+        // Check next() and hasNext()
+        it = fm.getIterator(); 
+        assertTrue(it.hasNext()); 
+        it.next();
+        assertTrue(it.hasNext()); 
+        it.next();
+        assertTrue(it.hasNext());
+        it.next();
+        assertFalse(it.hasNext());
+        
+        // Check prev() and hasPrev()
+        assertTrue(it.hasPrev()); 
+        it.prev();
+        assertTrue(it.hasPrev()); 
+        it.prev();
+        assertTrue(it.hasPrev());
+        it.prev();
+        assertFalse(it.hasPrev());
+        
+        // Check replaceAll()
+        it.replaceAll("Pattymon");
+        assertEquals("Pattymon", it.getType());
+        assertTrue(fm.contains("Pattymon"));
+        assertEquals(3, fm.countType("Pattymon"));
     }
 
 }

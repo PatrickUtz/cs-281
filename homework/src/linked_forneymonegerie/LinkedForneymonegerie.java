@@ -148,6 +148,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	ForneymonType current = head;
     	String rarest = null;
         int rarestCount = current.count;
+        
         while (checkNotNull(current)) {
         	if (current.count <= rarestCount) {
         		rarest = current.type;
@@ -155,6 +156,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         	}
         	current = current.next;
         }
+        
         return rarest;
     }
     
@@ -165,20 +167,19 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
      */
     public LinkedForneymonegerie clone () {
     	LinkedForneymonegerie clone = new LinkedForneymonegerie();
-    	ForneymonType current = head;
+    	ForneymonType current = head.next;
     	ForneymonType cloneCurrent = null;
-    	ForneymonType clonePrev = null;
+    	
+    	clone.head = new ForneymonType(head.type, head.count);
+    	cloneCurrent = clone.head;
+    	
     	while (checkNotNull(current)) {
-    		if (clone.head == null) {
-    			clone.head = new ForneymonType(head.type, head.count);
-    			cloneCurrent = clone.head;
-    		} else {
-    			cloneCurrent.next = new ForneymonType(current.type, current.count);
-        		cloneCurrent.next.prev = cloneCurrent; 
-        		cloneCurrent = cloneCurrent.next;
-    		}
+    		cloneCurrent.next = new ForneymonType(current.type, current.count);
+        	cloneCurrent.next.prev = cloneCurrent; 
+        	cloneCurrent = cloneCurrent.next;
     		current = current.next;
     	}
+    	
     	clone.modCount = modCount;
     	clone.size = size;
     	clone.typeSize = typeSize;
@@ -186,8 +187,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     }
     
     /*
-     * Returns true if the LinkedForneymonegerie has no Forneymon inside, 
-     * false otherwise
+     * Swaps the contents of the calling LinkedForneymonegerie and the other specified
      */
     public void trade (LinkedForneymonegerie other) {
     	ForneymonType tempHead = head;
@@ -210,8 +210,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     }
     
     /*
-     * Returns true if the LinkedForneymonegerie has no Forneymon inside, 
-     * false otherwise
+     * Returns a String representation of the calling LinkedForneymonegerie 
      */
     @Override
     public String toString() {
@@ -227,8 +226,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     }
     
     /*
-     * Returns true if the LinkedForneymonegerie has no Forneymon inside, 
-     * false otherwise
+     * Returns a reference to a new LinkedForneymonegerie.Iterator object initialized at the head
      */
     public LinkedForneymonegerie.Iterator getIterator () {
         if (empty()) {
@@ -243,6 +241,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     // Static methods
     // -----------------------------------------------------------
     
+    /*
+     * Returns a *new* LinkedForneymonegerie object consisting of all Forneymon 
+     * (NOTE: not ForneymonTypes) from y1 that do NOT appear in y2
+     */
     public static LinkedForneymonegerie diffMon (LinkedForneymonegerie y1, LinkedForneymonegerie y2) {
     	LinkedForneymonegerie result = y1.clone();
     	ForneymonType current = y2.head;
@@ -253,6 +255,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return result;
     }
     
+    /*
+     * Returns true if y1 and y2 contain the exact same ForneymonTypes and number 
+     * of Forneymon in each type, though in any collection order
+     */
     public static boolean sameCollection (LinkedForneymonegerie y1, LinkedForneymonegerie y2) {
     	return diffMon(y1, y2).empty() && y1.size == y2.size && y1.typeSize == y2.typeSize;
     }
@@ -262,6 +268,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
 
     // TODO: Your helper methods here!
     
+    /*
+     * Returns the FornemonType indicated by typeToFind
+     */
     private ForneymonType getType (String typeToFind) {
     	if (empty()) {
     		return null;
@@ -276,10 +285,16 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return null;
     }
     
+    /*
+     * Returns true if the ForneymonType typeToCheck is not null and therefore exists 
+     */
     private boolean checkNotNull (ForneymonType typeToCheck) {
     	return typeToCheck != null; 
     }
     
+    /*
+     * Removes the ForneymonType toRemove 
+     */
     private void remove (ForneymonType toRemove) {
     	if (toRemove == head) {
     		if (head.next != null) {
@@ -298,6 +313,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return;
     }
     
+    /*
+     * Removes countToRemove amount of ForneymonType toRemove 
+     */
     private void releaseMany (String toRemove, int countToRemove) {
     	ForneymonType typeToRelease = getType(toRemove);
     	if (checkNotNull(typeToRelease)) {
@@ -310,6 +328,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	}
     }
     
+    /*
+     * Returns true if the ForneymonType toCheck is the end of the LinkedForneymonegerie, false
+     * otherwise 
+     */
     private boolean isEnd (ForneymonType toCheck) {
     	if (toCheck.next == null) {
     		return true;
@@ -317,6 +339,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return false;
     }
     
+    /*
+     * Returns the end ForneymonType of the LinkedForneymonegerie
+     */
     private ForneymonType getEnd () {
     	ForneymonType current = head;
     	while (!isEnd(current)) {
@@ -342,6 +367,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         	itModCount = owner.modCount;
         }
         
+        /*
+         * Returns true if there is another Forneymon in the LinkedForneymonegerie after the current
+         */
         public boolean hasNext () {
         	if (!isValid()) {
         		return false;
@@ -352,6 +380,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         	}
         }
         
+        /*
+         * Returns true if there is another Forneymon in the LinkedForneymonegerie before the current
+         */
         public boolean hasPrev () {
         	if (!isValid()) {
         		return false;
@@ -362,10 +393,17 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         	}
         }
         
+        /*
+         * Returns true if this Iterator's itModCount agrees with that of its owner's modCount, 
+         * false otherwise
+         */
         public boolean isValid () {
             return itModCount == owner.modCount;
         }
         
+        /*
+         * Returns the type of the Forneymon that the Iterator is currently pointing at
+         */
         public String getType () {
         	if (!isValid()) {
         		return null;
@@ -374,6 +412,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         	}
         }
 
+        /*
+         * Advances this Iterator to the next Forneymon in the LinkedForneymonegerie
+         */
         public void next () {
             if (!isValid()) {
             	throw new IllegalStateException();
@@ -389,6 +430,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
             }
         }
         
+        /*
+         * Regresses this Iterator to the previous String occurrence in the LinkedForneymonegerie
+         */
         public void prev () {
         	if (!isValid()) {
             	throw new IllegalStateException();
@@ -404,6 +448,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
             }
         }
         
+        /*
+         * Replaces *all* Forneymon of the ForneymonType that this Iterator currently points to 
+         * with that given in the parameter toReplaceWith
+         */
         public void replaceAll (String toReplaceWith) {
             if (!isValid()) {
             	throw new IllegalStateException();
