@@ -31,6 +31,10 @@ public class LinkedForneymonegerieTests {
         assertEquals(2, fm.size());
         fm.collect("Burnymon");
         assertEquals(3, fm.size());
+        fm.collect("PattyMon"); // added tests start here
+        assertEquals(4, fm.size());
+        fm.release("Dampymon");
+        assertEquals(3, fm.size());
     }
 
     @Test
@@ -40,6 +44,8 @@ public class LinkedForneymonegerieTests {
         assertEquals(1, fm.typeSize());
         fm.collect("Burnymon");
         assertEquals(2, fm.typeSize());
+        fm.releaseType("Dampymon"); // added tests start here
+        assertEquals(1, fm.typeSize());
     }
 
     @Test
@@ -49,6 +55,9 @@ public class LinkedForneymonegerieTests {
         fm.collect("Burnymon");
         assertTrue(fm.contains("Dampymon"));
         assertTrue(fm.contains("Burnymon"));
+        fm.collect("PattyMon"); // added tests start here
+        assertTrue(fm.contains("PattyMon"));
+        assertEquals(4, fm.size());
     }
 
     @Test
@@ -60,6 +69,10 @@ public class LinkedForneymonegerieTests {
         fm.release("Dampymon");
         assertEquals(1, fm.size());
         assertEquals(1, fm.typeSize());
+        fm.release("Dampymon"); // added tests start here
+        assertEquals(0, fm.size());
+        assertEquals(0, fm.typeSize());
+        assertFalse(fm.release("Dampymon"));
     }
 
     @Test
@@ -72,6 +85,9 @@ public class LinkedForneymonegerieTests {
         fm.releaseType("Dampymon");
         assertEquals(1, fm.size());
         assertEquals(1, fm.typeSize());
+        fm.releaseType("Burnymon"); // added tests start here
+        assertEquals(0, fm.size());
+        assertEquals(0, fm.typeSize());
     }
 
     @Test
@@ -82,6 +98,8 @@ public class LinkedForneymonegerieTests {
         assertEquals(2, fm.countType("Dampymon"));
         assertEquals(1, fm.countType("Burnymon"));
         assertEquals(0, fm.countType("forneymon"));
+        fm.collect("Pattymon"); // added tests start here
+        assertEquals(1, fm.countType("Pattymon"));
     }
 
     @Test
@@ -92,6 +110,8 @@ public class LinkedForneymonegerieTests {
         assertTrue(fm.contains("Dampymon"));
         assertTrue(fm.contains("Burnymon"));
         assertFalse(fm.contains("forneymon"));
+        fm.collect("Pattymon"); // added tests start here
+        assertTrue(fm.contains("Pattymon")); 
     }
 
     @Test
@@ -101,6 +121,10 @@ public class LinkedForneymonegerieTests {
         fm.collect("Zappymon");
         assertEquals("Zappymon", fm.rarestType());
         fm.collect("Zappymon");
+        assertEquals("Zappymon", fm.rarestType());
+        fm.collect("Pattymon"); // added tests start here
+        fm.collect("Pattymon");
+        fm.collect("Pattymon");
         assertEquals("Zappymon", fm.rarestType());
     }
 

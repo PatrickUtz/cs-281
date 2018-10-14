@@ -1,5 +1,12 @@
 package linked_forneymonegerie;
 
+/*
+ * Name: LinkedForneymonegerie
+ * Author: Patrick Utz 
+ * Date: 10/19/2018
+ * Description: A Linked List implementation of HW 1.
+ */
+
 import java.util.NoSuchElementException;
 
 public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
@@ -22,18 +29,32 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     
     // Methods
     // -----------------------------------------------------------
+    
+    /*
+     * Returns true if the LinkedForneymonegerie has no Forneymon inside, 
+     * false otherwise
+     */
     public boolean empty () {
     	return size == 0;
     }
     
+    /*
+     * Returns the current size of the LinkedForneymonegerie
+     */
     public int size () {
         return size;
     }
     
+    /*
+     * Returns the number of unique Forneymon types in the LinkedForneymonegerie
+     */
     public int typeSize () {
     	return typeSize;
     }
     
+    /*
+     * Adds the Forneymon type indicated by toAdd to the Forneymonegerie
+     */
     public boolean collect (String toAdd) {
         modCount++;
                 
@@ -61,6 +82,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         }
     }
     
+    /*
+     * Removes 1 Forneymon of the given typeToRelease from the LinkedForneymonegerie, 
+     * and returns true if at least 1 was removed this way, false otherwise
+     */
     public boolean release (String toRemove) {
     	modCount++;
     	ForneymonType typeToRelease = getType(toRemove);
@@ -76,6 +101,9 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return false;
     }
     
+    /*
+     * Removes ALL Forneymon of the given typeToNuke from the LinkedForneymonegerie
+     */
     public void releaseType (String toNuke) {
     	modCount++;
     	ForneymonType typeToNuke = getType(toNuke);
@@ -87,6 +115,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return;
     }
     
+    /*
+     * Returns the number of Forneymon of the given typeToCount found in the 
+     * LinkedForneymonegerie
+     */
     public int countType (String toCount) {
     	ForneymonType typeToCount = getType(toCount);
     	if (checkNotNull(typeToCount)) {
@@ -95,6 +127,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return 0;
     }
     
+    /*
+     * Returns true if the given typeToCheck appears at least once inside of the 
+     * LinkedForneymonegerie
+     */
     public boolean contains (String toCheck) {
         if (checkNotNull(getType(toCheck))) {
         	return true;
@@ -102,6 +138,12 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         return false;
     }
     
+    /*
+     * Returns the ForneymonType that occurs least frequently in the
+     *  LinkedForneymonegerie. In the event of a tie, it returns the ForneymonType 
+     *  that was collected the most recently. If the LinkedForneymonegerie is empty,
+     *  it returns null
+     */
     public String rarestType () {
     	ForneymonType current = head;
     	String rarest = null;
@@ -116,6 +158,11 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         return rarest;
     }
     
+    /*
+     * Returns a deep copy of this LinkedForneymonegerie, which is a new 
+     * LinkedForneymonegerie object with the same ForneymonTypes, number of 
+     * Forneymon, and in the same collection order
+     */
     public LinkedForneymonegerie clone () {
     	LinkedForneymonegerie clone = new LinkedForneymonegerie();
     	ForneymonType current = head;
@@ -138,6 +185,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return clone;
     }
     
+    /*
+     * Returns true if the LinkedForneymonegerie has no Forneymon inside, 
+     * false otherwise
+     */
     public void trade (LinkedForneymonegerie other) {
     	ForneymonType tempHead = head;
     	int tempSize = size;
@@ -158,6 +209,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	other.modCount++;
     }
     
+    /*
+     * Returns true if the LinkedForneymonegerie has no Forneymon inside, 
+     * false otherwise
+     */
     @Override
     public String toString() {
     	String[] result = new String[typeSize];
@@ -171,6 +226,10 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     	return "[ " + String.join(", ", result) + " ]";
     }
     
+    /*
+     * Returns true if the LinkedForneymonegerie has no Forneymon inside, 
+     * false otherwise
+     */
     public LinkedForneymonegerie.Iterator getIterator () {
         if (empty()) {
         	throw new IllegalStateException();
@@ -296,7 +355,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         public boolean hasPrev () {
         	if (!isValid()) {
         		return false;
-        	} else if ((current.count > 1) || (current.prev != null)) {
+        	} else if ((currentCountIndex > 1) || (current.prev != null)) {
         		return true;
         	} else {
                 return false;
