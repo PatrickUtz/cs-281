@@ -87,7 +87,6 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
      * and returns true if at least 1 was removed this way, false otherwise
      */
     public boolean release (String toRemove) {
-    	modCount++;
     	ForneymonType typeToRelease = getType(toRemove);
     	if (checkNotNull(typeToRelease)) {
     		if (typeToRelease.count == 1) {
@@ -96,6 +95,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
     			typeToRelease.count--;
     			size--;
     		}
+    		modCount++;
 			return true;
     	}
     	return false;
@@ -105,12 +105,12 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
      * Removes ALL Forneymon of the given typeToNuke from the LinkedForneymonegerie
      */
     public void releaseType (String toNuke) {
-    	modCount++;
     	ForneymonType typeToNuke = getType(toNuke);
     	if (checkNotNull(typeToNuke)) {
     		typeSize--;
     		size = size - typeToNuke.count;
     		remove(typeToNuke);
+    		modCount++;
     	}
     	return;
     }
