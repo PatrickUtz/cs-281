@@ -145,6 +145,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
      *  it returns null
      */
     public String rarestType () {
+    	if (!checkNotNull(head)) {return null;}
     	ForneymonType current = head;
     	String rarest = null;
         int rarestCount = current.count;
@@ -167,6 +168,7 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
      */
     public LinkedForneymonegerie clone () {
     	LinkedForneymonegerie clone = new LinkedForneymonegerie();
+    	if (!checkNotNull(head)) {return clone;}
     	ForneymonType current = head.next;
     	ForneymonType cloneCurrent = null;
     	
@@ -455,13 +457,28 @@ public class LinkedForneymonegerie implements LinkedForneymonegerieInterface {
         public void replaceAll (String toReplaceWith) {
             if (!isValid()) {
             	throw new IllegalStateException();
-            } else {
-            	itModCount++;
+            } else if (current.type.equals(toReplaceWith)) {
+            	return;	
+            } else if (owner.checkNotNull(owner.getType(toReplaceWith))) {
+            	ForneymonType typeExists = owner.getType(toReplaceWith);
+            	typeExists.count += current.count;
+            	owner.size += current.count; // account for size reduction due to releaseType()
+            	owner.releaseType(current.type);
+            	current = typeExists;
+            	itModCount += 2; // account for calling releaseType() 
             	owner.modCount++;
+            } else {
+            	owner.collect(toReplaceWith);
+            	ForneymonType newType = owner.getEnd();
+            	newType.count = current.count;
+            	owner.size += current.count; // account for size reduction due to releaseType()
+            	owner.releaseType(current.type);
+            	current = newType;
             	current.type = toReplaceWith;
+            	itModCount += 3; // account for calling collect() & releaseType() 
+            	owner.modCount++;
             }
         }
-        
     }
     
     private class ForneymonType {
