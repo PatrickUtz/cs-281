@@ -42,6 +42,29 @@ public class IntLinkedList {
 		if (prev != null) {prev.next = current.next;}
 	}
 	
+	public boolean checkCycle () {
+		Node current = head;
+		boolean hasCycle = false;
+		int status = 0;
+		while (current != null) {
+			if (status > size) {
+				hasCycle = true;
+				break;
+			}
+			status++;
+			current = current.next;
+		}
+		return hasCycle;
+	}
+	
+	public void addCycle (int item) {
+		Node heldHead = head;
+		head = new Node(item);
+		head.next = heldHead;
+		heldHead.next = head;
+		size = 2;
+	}
+	
 	public Iterator getIteratorAt (int index) {
 		if (index > size || index <0) {
 			throw new IllegalArgumentException();
@@ -99,5 +122,9 @@ public class IntLinkedList {
 		System.out.println(it.getCurrentInt());
 		it.next();
 		System.out.println(it.getCurrentInt());
+		
+		System.out.println(coolJ.checkCycle());
+		coolJ.addCycle(5);
+		System.out.println(coolJ.checkCycle());
 	}
 }
