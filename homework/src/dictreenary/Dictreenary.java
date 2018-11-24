@@ -55,7 +55,7 @@ public class Dictreenary implements DictreenaryInterface {
         if (query.length() == 1) { return null; }
         if (query.length() == 2) {
         	checkPossible = Character.toString(query.charAt(1)) + 
-        			Character.toString(query.charAt(0));
+        			    Character.toString(query.charAt(0));
         	if (hasWord(checkPossible)) {
             	return checkPossible;
             } else {
