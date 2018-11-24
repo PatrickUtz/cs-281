@@ -8,7 +8,9 @@ public class Dictreenary implements DictreenaryInterface {
     // -----------------------------------------------------------
     TTNode root;
     private String wordToAdd;
+    private String wordToCheck;
     private int status;
+    private boolean isValid;
     
     // Constructor
     // -----------------------------------------------------------
@@ -36,11 +38,46 @@ public class Dictreenary implements DictreenaryInterface {
     }
     
     public boolean hasWord (String query) {
-        throw new UnsupportedOperationException();
+    	wordToCheck = normalizeWord(query);
+    	status = 0;
+    	if (isEmpty()) { 
+    		return false;
+    	} else {
+    		return (hasWord(root));
+    	}
     }
     
     public String spellCheck (String query) {
-        throw new UnsupportedOperationException();
+    	String checkPossible;
+    	if (hasWord(query)) {
+        	return query;
+        }
+        if (query.length() == 1) { return null; }
+        if (query.length() == 2) {
+        	checkPossible = Character.toString(query.charAt(1)) + 
+        			Character.toString(query.charAt(0));
+        	if (hasWord(checkPossible)) {
+            	return checkPossible;
+            } else {
+            	return null;
+            }
+        }
+        for (int i = 0; i < query.length()-1; i++) {
+        	if (i == 0) {
+        		checkPossible = Character.toString(query.charAt(i+1)) + 
+            			Character.toString(query.charAt(i)) + 
+            			query.substring(i+2, query.length());
+        	} else {
+        		checkPossible = query.substring(0, i) + 
+        				Character.toString(query.charAt(i+1)) + 
+            			Character.toString(query.charAt(i)) + 
+            			query.substring(i+2, query.length());
+        	}
+        	if (hasWord(checkPossible)) {
+            	return checkPossible;
+            } 
+        }
+        return null;
     }
     
     public ArrayList<String> getSortedWords () {
@@ -115,12 +152,26 @@ public class Dictreenary implements DictreenaryInterface {
         }
     }
     
-    private void addFirstWord (TTNode n) {
-    	// End case: added all letters of wordToAdd
-    	if (status == wordToAdd.length()) { return; }
-        n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-        status++;
-        addFirstWord(n.mid);
+    private boolean hasWord (TTNode n) {
+    	if (status == wordToCheck.length() && isValid) { return true; }
+    	if (status == wordToCheck.length() && !isValid) { return false; }
+    	if (n == null) { return false; }
+    	isValid = n.wordEnd;
+    	if (compareChars(wordToCheck.charAt(status), n.letter) == 0) {
+    		status++; 
+    		return (hasWord(n.mid));
+    	}
+    	if (n.mid != null && compareChars(wordToCheck.charAt(status), n.mid.letter) == 0) {
+    		status++;
+    		return (hasWord(n.mid));
+    	}
+    	if (compareChars(wordToCheck.charAt(status), n.letter) < 0) {
+    		return (hasWord(n.left));
+    	}
+    	if (compareChars(wordToCheck.charAt(status), n.letter) > 0) {
+    		return (hasWord(n.right));
+    	}
+    	return false;
     }
     
     private boolean checkWordEnd () {
@@ -146,5 +197,4 @@ public class Dictreenary implements DictreenaryInterface {
         }
         
     }
-    
 }

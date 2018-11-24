@@ -18,9 +18,13 @@ public class DictreenaryTests {
     // Used as the basic empty Dictreenary to test; 
     // the @Before method is run before every @Test
     Dictreenary dt;
+    Dictreenary dt2;
+    Dictreenary dt3;
     @Before
     public void init () {
         dt = new Dictreenary();
+        dt2 = new Dictreenary();
+        dt3 = new Dictreenary();
     }
     
     
@@ -66,6 +70,23 @@ public class DictreenaryTests {
         assertFalse(dt.hasWord("ii"));
         assertFalse(dt.hasWord("i"));
         assertFalse(dt.hasWord("zoo"));
+        
+        dt2.addWord("it"); // added tests
+        dt2.addWord("item");
+        dt2.addWord("is");
+        dt2.addWord("bakery");
+        dt2.addWord("its");
+        dt2.addWord("back");
+        dt2.addWord("gone");
+        assertTrue(dt2.hasWord("it"));
+        assertTrue(dt2.hasWord("item"));
+        assertTrue(dt2.hasWord("is"));
+        assertTrue(dt2.hasWord("bakery"));
+        assertTrue(dt2.hasWord("its"));
+        assertTrue(dt2.hasWord("back"));
+        assertTrue(dt2.hasWord("gone"));
+        
+        assertFalse(dt3.hasWord("Utz"));
     }
 
     @Test
