@@ -9,8 +9,10 @@ public class Dictreenary implements DictreenaryInterface {
     TTNode root;
     private String wordToAdd;
     private String wordToCheck;
+    private String wordToSort;
     private int status;
     private boolean isValid;
+    private ArrayList<String> sortedAlpha;
     
     // Constructor
     // -----------------------------------------------------------
@@ -81,7 +83,10 @@ public class Dictreenary implements DictreenaryInterface {
     }
     
     public ArrayList<String> getSortedWords () {
-        throw new UnsupportedOperationException();
+    	sortedAlpha = new ArrayList<String>();
+    	if (isEmpty()) { return sortedAlpha; }
+    	getSortedWords(root);
+        return sortedAlpha;
     }
     
     
@@ -107,6 +112,18 @@ public class Dictreenary implements DictreenaryInterface {
     }
     
     private void addWord (TTNode n) {
+    	
+//    	// End case: added all letters of wordToAdd
+//    	if (status == wordToAdd.length()) { return; }
+//    	// if charToAdd is the same and duplicate letter
+//        if (compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
+//        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+//        	if (n.mid == null) {
+//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+//        		status++;
+//        	}
+//        	addWord(n.mid);
+//        }
     	
     	// End case: added all letters of wordToAdd
     	if (status == wordToAdd.length()) { return; }
@@ -172,6 +189,37 @@ public class Dictreenary implements DictreenaryInterface {
     		return (hasWord(n.right));
     	}
     	return false;
+    }
+    
+    private void getSortedWords (TTNode n) {
+    	if (n == null) { return; }
+    	getSortedWords(n.left);
+    	wordToSort = "";
+//    	if (n.wordEnd) { sortedAlpha.add(Character.toString(n.letter)); }
+//    	extractWord(n);
+    	wordToSort.concat(Character.toString(n.letter));
+    	if (n.wordEnd) { sortedAlpha.add(wordToSort); }
+    	getSortedWords(n.mid);
+    	getSortedWords(n.right);
+    	
+    	
+    }
+    
+    private void extractWord (TTNode n) {
+    	wordToSort.concat(Character.toString(n.letter));
+//    	n = n.mid;
+    	while (!n.wordEnd) {
+    		n = n.mid;
+    		wordToSort.concat(Character.toString(n.letter));
+    	}
+    	sortedAlpha.add(wordToSort);
+    	return;
+//    	if (n == null) { return; }
+//    	
+//    	if (n.wordEnd) { return; }
+//    	extractWord(n.mid);
+    	
+    	
     }
     
     private boolean checkWordEnd () {

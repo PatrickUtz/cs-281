@@ -125,6 +125,7 @@ public class DictreenaryTests {
         ArrayList<String> solution = new ArrayList<String>(Arrays.asList(
             "as", "ass", "at", "bat", "bother", "is", "it", "itenerary", "zoo"
         ));
+        System.out.println(solution.toString());
         assertEquals(solution, dt.getSortedWords());
     }
     
