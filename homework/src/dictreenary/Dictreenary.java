@@ -113,10 +113,20 @@ public class Dictreenary implements DictreenaryInterface {
     }
     
     private void addWord (TTNode n) {
+    	    	
+    	// End case: added all letters of wordToAdd
+    	if (status == wordToAdd.length()) { return; }
+    	// if adding a letter that already exists in dict and just add wordEnding
+        if (status == wordToAdd.length()-1 && 
+        		n.mid != null &&
+        		compareChars(wordToAdd.charAt(status), n.letter) == 0) {
+        	n.wordEnd = true;
+        	return;
+        }
     	
     	// End case: added all letters of wordToAdd
     	if (status == wordToAdd.length()) { return; }
-    	// if charToAdd is the same and duplicate letter
+    	// if adding word that has duplicate letters that exists already
         if (status > 0 && 
         		compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
         		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {

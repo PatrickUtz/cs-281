@@ -83,6 +83,7 @@ public class DictreenaryTests {
         dt2.addWord("baal");
         dt2.addWord("baallerrr");
         dt2.addWord("bbaabble");
+        dt2.addWord("i");
         assertTrue(dt2.hasWord("it"));
         assertTrue(dt2.hasWord("item"));
         assertTrue(dt2.hasWord("is"));
@@ -96,6 +97,7 @@ public class DictreenaryTests {
         assertTrue(dt2.hasWord("baal"));
         assertTrue(dt2.hasWord("baallerrr"));
         assertTrue(dt2.hasWord("bbaabble"));
+        assertTrue(dt2.hasWord("i"));
 
         assertFalse(dt2.hasWord("Utz"));
         assertFalse(dt2.hasWord("oopsi"));
