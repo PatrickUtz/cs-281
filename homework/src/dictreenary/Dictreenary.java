@@ -84,6 +84,7 @@ public class Dictreenary implements DictreenaryInterface {
     
     public ArrayList<String> getSortedWords () {
     	sortedAlpha = new ArrayList<String>();
+    	wordToSort = "";
     	if (isEmpty()) { return sortedAlpha; }
     	getSortedWords(root);
         return sortedAlpha;
@@ -113,17 +114,20 @@ public class Dictreenary implements DictreenaryInterface {
     
     private void addWord (TTNode n) {
     	
-//    	// End case: added all letters of wordToAdd
-//    	if (status == wordToAdd.length()) { return; }
-//    	// if charToAdd is the same and duplicate letter
-//        if (compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
-//        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
-//        	if (n.mid == null) {
-//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-//        		status++;
-//        	}
-//        	addWord(n.mid);
-//        }
+    	// End case: added all letters of wordToAdd
+    	if (status == wordToAdd.length()) { return; }
+    	// if charToAdd is the same and duplicate letter
+        if (status > 0 && 
+        		compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
+        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+        	if (n.mid == null) {
+        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+        		status++;
+        	} else {
+        		status++;
+        	}
+        	addWord(n.mid);
+        }
     	
     	// End case: added all letters of wordToAdd
     	if (status == wordToAdd.length()) { return; }
@@ -194,12 +198,12 @@ public class Dictreenary implements DictreenaryInterface {
     private void getSortedWords (TTNode n) {
     	if (n == null) { return; }
     	getSortedWords(n.left);
-    	wordToSort = "";
 //    	if (n.wordEnd) { sortedAlpha.add(Character.toString(n.letter)); }
 //    	extractWord(n);
-    	wordToSort.concat(Character.toString(n.letter));
+    	wordToSort = wordToSort.concat(Character.toString(n.letter));
     	if (n.wordEnd) { sortedAlpha.add(wordToSort); }
     	getSortedWords(n.mid);
+    	wordToSort = wordToSort.substring(0,wordToSort.length()-1);
     	getSortedWords(n.right);
     	
     	

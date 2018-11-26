@@ -19,12 +19,11 @@ public class DictreenaryTests {
     // the @Before method is run before every @Test
     Dictreenary dt;
     Dictreenary dt2;
-    Dictreenary dt3;
+    
     @Before
     public void init () {
         dt = new Dictreenary();
         dt2 = new Dictreenary();
-        dt3 = new Dictreenary();
     }
     
     
@@ -78,6 +77,12 @@ public class DictreenaryTests {
         dt2.addWord("its");
         dt2.addWord("back");
         dt2.addWord("gone");
+        dt2.addWord("oops");
+        dt2.addWord("OOpSiEs");
+        dt2.addWord("backed");
+        dt2.addWord("baal");
+        dt2.addWord("baallerrr");
+        dt2.addWord("bbaabble");
         assertTrue(dt2.hasWord("it"));
         assertTrue(dt2.hasWord("item"));
         assertTrue(dt2.hasWord("is"));
@@ -85,8 +90,15 @@ public class DictreenaryTests {
         assertTrue(dt2.hasWord("its"));
         assertTrue(dt2.hasWord("back"));
         assertTrue(dt2.hasWord("gone"));
-        
-        assertFalse(dt3.hasWord("Utz"));
+        assertTrue(dt2.hasWord("oops"));
+        assertTrue(dt2.hasWord("oopsies"));
+        assertTrue(dt2.hasWord("backed"));
+        assertTrue(dt2.hasWord("baal"));
+        assertTrue(dt2.hasWord("baallerrr"));
+        assertTrue(dt2.hasWord("bbaabble"));
+
+        assertFalse(dt2.hasWord("Utz"));
+        assertFalse(dt2.hasWord("oopsi"));
     }
 
     @Test
@@ -125,8 +137,27 @@ public class DictreenaryTests {
         ArrayList<String> solution = new ArrayList<String>(Arrays.asList(
             "as", "ass", "at", "bat", "bother", "is", "it", "itenerary", "zoo"
         ));
-        System.out.println(solution.toString());
+        System.out.println(dt.getSortedWords().toString());
         assertEquals(solution, dt.getSortedWords());
+        
+        dt2.addWord("is"); // added tests
+        dt2.addWord("oops");
+        dt2.addWord("ooper");
+        dt2.addWord("it");
+        dt2.addWord("as");
+        dt2.addWord("poop");
+        dt2.addWord("itenerary");
+        dt2.addWord("ass");
+        dt2.addWord("at");
+        dt2.addWord("zoo");
+        dt2.addWord("bat");
+        dt2.addWord("bother");
+        ArrayList<String> solution2 = new ArrayList<String>(Arrays.asList(
+            "as", "ass", "at", "bat", "bother", "is", "it", "itenerary", 
+            "ooper", "oops", "poop", "zoo"
+        ));
+        System.out.println(dt2.getSortedWords().toString());
+        assertEquals(solution2, dt2.getSortedWords());
     }
     
 }
