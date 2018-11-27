@@ -6,6 +6,7 @@ public class Dictreenary implements DictreenaryInterface {
 
     // Fields
     // -----------------------------------------------------------
+	
     TTNode root;
     private String wordToAdd;
     private String wordToCheck;
@@ -16,6 +17,7 @@ public class Dictreenary implements DictreenaryInterface {
     
     // Constructor
     // -----------------------------------------------------------
+    
     Dictreenary () {}
     
     
@@ -45,7 +47,7 @@ public class Dictreenary implements DictreenaryInterface {
     	if (isEmpty()) { 
     		return false;
     	} else {
-    		return (hasWord(root));
+    		return hasWord(root);
     	}
     }
     
@@ -112,12 +114,11 @@ public class Dictreenary implements DictreenaryInterface {
         return Character.toLowerCase(c1) - Character.toLowerCase(c2);
     }
     
-    private void addWord (TTNode n) {
-    	    	
-    	// End case: added all letters of wordToAdd
+    private void addWord (TTNode n) { 	
+    	// end case: added all letters of wordToAdd
     	if (status == wordToAdd.length()) { 
     		return;
-    	// if adding a letter that already exists in dict and just add wordEnding
+    	// if adding word that already exists in dict and just changing wordEnding of a letter
     	} else if (status == wordToAdd.length()-1 && 
         		n.mid != null &&
         		compareChars(wordToAdd.charAt(status), n.letter) == 0) {
@@ -134,7 +135,7 @@ public class Dictreenary implements DictreenaryInterface {
         		status++;
         	}
         	addWord(n.mid);
-        // if charToAdd is the same
+        // if adding a character that is the same as one in dict and prev conditions not satisfied
         } else if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
         	status++;
         	if (n.mid == null) {
@@ -189,32 +190,11 @@ public class Dictreenary implements DictreenaryInterface {
     private void getSortedWords (TTNode n) {
     	if (n == null) { return; }
     	getSortedWords(n.left);
-//    	if (n.wordEnd) { sortedAlpha.add(Character.toString(n.letter)); }
-//    	extractWord(n);
     	wordToSort = wordToSort.concat(Character.toString(n.letter));
     	if (n.wordEnd) { sortedAlpha.add(wordToSort); }
     	getSortedWords(n.mid);
     	wordToSort = wordToSort.substring(0,wordToSort.length()-1);
     	getSortedWords(n.right);
-    	
-    	
-    }
-    
-    private void extractWord (TTNode n) {
-    	wordToSort.concat(Character.toString(n.letter));
-//    	n = n.mid;
-    	while (!n.wordEnd) {
-    		n = n.mid;
-    		wordToSort.concat(Character.toString(n.letter));
-    	}
-    	sortedAlpha.add(wordToSort);
-    	return;
-//    	if (n == null) { return; }
-//    	
-//    	if (n.wordEnd) { return; }
-//    	extractWord(n.mid);
-    	
-    	
     }
     
     private boolean checkWordEnd () {
@@ -237,7 +217,6 @@ public class Dictreenary implements DictreenaryInterface {
         TTNode (char c, boolean w) {
             letter  = c;
             wordEnd = w;
-        }
-        
+        } 
     }
 }
