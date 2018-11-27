@@ -1,3 +1,10 @@
+/* 
+ * Author: Patrick Utz
+ * Date: Nov 26, 2018
+ * CS 281 - HW 4
+ * Dr. Forney
+ */
+
 package dictreenary;
 
 import static org.junit.Assert.*;
