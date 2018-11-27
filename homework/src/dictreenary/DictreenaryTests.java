@@ -145,6 +145,7 @@ public class DictreenaryTests {
         dt2.addWord("is"); // added tests
         dt2.addWord("oops");
         dt2.addWord("ooper");
+        dt2.addWord("i");
         dt2.addWord("it");
         dt2.addWord("as");
         dt2.addWord("poop");
@@ -153,10 +154,11 @@ public class DictreenaryTests {
         dt2.addWord("at");
         dt2.addWord("zoo");
         dt2.addWord("bat");
+        dt2.addWord("player");
         dt2.addWord("bother");
         ArrayList<String> solution2 = new ArrayList<String>(Arrays.asList(
-            "as", "ass", "at", "bat", "bother", "is", "it", "itenerary", 
-            "ooper", "oops", "poop", "zoo"
+            "as", "ass", "at", "bat", "bother", "i", "is", "it", "itenerary", 
+            "ooper", "oops", "player", "poop", "zoo"
         ));
         System.out.println(dt2.getSortedWords().toString());
         assertEquals(solution2, dt2.getSortedWords());

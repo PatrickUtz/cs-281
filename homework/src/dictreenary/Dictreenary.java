@@ -115,19 +115,16 @@ public class Dictreenary implements DictreenaryInterface {
     private void addWord (TTNode n) {
     	    	
     	// End case: added all letters of wordToAdd
-    	if (status == wordToAdd.length()) { return; }
+    	if (status == wordToAdd.length()) { 
+    		return;
     	// if adding a letter that already exists in dict and just add wordEnding
-        if (status == wordToAdd.length()-1 && 
+    	} else if (status == wordToAdd.length()-1 && 
         		n.mid != null &&
         		compareChars(wordToAdd.charAt(status), n.letter) == 0) {
         	n.wordEnd = true;
         	return;
-        }
-    	
-    	// End case: added all letters of wordToAdd
-    	if (status == wordToAdd.length()) { return; }
-    	// if adding word that has duplicate letters that exists already
-        if (status > 0 && 
+        // if adding word that has duplicate letters that exists already
+        } else if (status > 0 && 
         		compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
         		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
         	if (n.mid == null) {
@@ -137,50 +134,34 @@ public class Dictreenary implements DictreenaryInterface {
         		status++;
         	}
         	addWord(n.mid);
-        }
-    	
-    	// End case: added all letters of wordToAdd
-    	if (status == wordToAdd.length()) { return; }
-    	// if charToAdd is the same
-        if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
+        // if charToAdd is the same
+        } else if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
         	status++;
         	if (n.mid == null) {
         		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
         		status++;
         	}
         	addWord(n.mid);
-        }
-        
-        // End case: added all letters of wordToAdd
-        if (status == wordToAdd.length()) { return; }
         // if adding letter to mid that is not a word ending
-        if (!n.wordEnd && n.left == null && n.right == null && n.mid == null) {
+        } else if (!n.wordEnd && n.left == null && n.right == null && n.mid == null) {
         	n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
     		status++;
     		addWord(n.mid);
-        }
-        
-        // End case: added all letters of wordToAdd
-        if (status == wordToAdd.length()) { return; }
-        // if charToAdd is alphabetically less than current letter
-        if (compareChars(wordToAdd.charAt(status), n.letter) < 0) {
+    	// if charToAdd is alphabetically less than current letter
+        } else if (compareChars(wordToAdd.charAt(status), n.letter) < 0) {
         	if (n.left == null) {
         		n.left = new TTNode(wordToAdd.charAt(status), checkWordEnd());
         		status++;
         	}
         	addWord(n.left);
-        }
-        
-        // End case: added all letters of wordToAdd
-        if (status == wordToAdd.length()) { return; }
         // if charToAdd is alphabetically greater than current letter
-        if (compareChars(wordToAdd.charAt(status), n.letter) > 0) {
+        } else if (compareChars(wordToAdd.charAt(status), n.letter) > 0) {
         	if (n.right == null) {
         		n.right = new TTNode(wordToAdd.charAt(status), checkWordEnd());
         		status++;
         	}
         	addWord(n.right);
-        }
+        }  
     }
     
     private boolean hasWord (TTNode n) {
