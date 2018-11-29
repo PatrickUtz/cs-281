@@ -62,6 +62,7 @@ public class DictreenaryTests {
         dt.addWord("is");
         dt.addWord("it");
         dt.addWord("as");
+        dt.addWord("as");
         dt.addWord("ass");
         dt.addWord("at");
         dt.addWord("bat");

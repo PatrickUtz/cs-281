@@ -125,9 +125,20 @@ public class Dictreenary implements DictreenaryInterface {
     	// end case: added all letters of wordToAdd
     	if (status == wordToAdd.length()) { 
     		return;
+    	// if adding word that has duplicate letters at end
+    	} else if (status == wordToAdd.length()-1 && 
+    			compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
+        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+        	if (n.mid == null) {
+        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+        		status++;
+        	} else {
+        		status++;
+        	}
+        	addWord(n.mid);        
     	// if adding word that already exists in dict and just changing wordEnding of a letter
     	} else if (status == wordToAdd.length()-1 && 
-        		n.mid != null &&
+//        		n.mid != null &&
         		compareChars(wordToAdd.charAt(status), n.letter) == 0) {
         	n.wordEnd = true;
         	return;
