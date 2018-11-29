@@ -125,43 +125,106 @@ public class Dictreenary implements DictreenaryInterface {
     	// end case: added all letters of wordToAdd
     	if (status == wordToAdd.length()) { 
     		return;
-    	// if adding word that has duplicate letters at end
-    	} else if (status == wordToAdd.length()-1 && 
-    			compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
-        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+    	// check if letter adding is name as n.letter
+    	} else if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
+    		// check if letter are adding is last one in wordToAdd
+    		if (status == wordToAdd.length()-1) {
+    			// check if wordToAdd is just one letter
+    			if (wordToAdd.length() == 1) {
+    				n.wordEnd = true;
+    				return;
+    			}
+    			// else check if adding a duplicate letter  
+    			if (compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+    				if (n.mid == null) {
+    	        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+    	        		status++;
+    	        	} else {
+    	        		n.wordEnd = true;
+    	        		return;
+    	        	}
+    	        	addWord(n.mid);
+    	        	return; //********
+    			}
+    			n.wordEnd = true;
+            	return;
+    		}
+    		// else if letter adding is not the last one in wordToAdd
+    		if (status > 0) {
+    			// if adding a duplicate letter
+    			if (compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+    				if (n.mid == null) {
+    	        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+    	        		status++;
+    	        	} else {
+    	        		status++;
+    	        	}
+    	        	addWord(n.mid);
+    	        	return; //********
+    			}
+    		}
+    		// if adding a letter that is the same as n.letter and no prev conditions met
+    		status++;
         	if (n.mid == null) {
         		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-        		status++;
-        	} else {
-        		status++;
-        	}
-        	addWord(n.mid);        
-    	// if adding word that already exists in dict and just changing wordEnding of a letter
-    	} else if (status == wordToAdd.length()-1 && 
-//        		n.mid != null &&
-        		compareChars(wordToAdd.charAt(status), n.letter) == 0) {
-        	n.wordEnd = true;
-        	return;
-        // if adding word that has duplicate letters that exists already
-        } else if (status > 0 && 
-        		compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
-        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
-        	if (n.mid == null) {
-        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-        		status++;
-        	} else {
         		status++;
         	}
         	addWord(n.mid);
-        // if adding a character that is the same as one in dict and prev conditions not satisfied
-        } else if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
-        	status++;
-        	if (n.mid == null) {
-        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-        		status++;
-        	}
-        	addWord(n.mid);
-        // if adding letter to mid that is not a word ending
+        	return; //********
+    	
+    	
+    	
+    		
+    		
+    		
+    	
+//    	// if adding word that has duplicate letters at end
+//    	} else if (status == wordToAdd.length()-1 && 
+//    			compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
+//        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+//        	if (n.mid == null) {
+//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+//        		status++;
+//        	} else {
+//        		status++;
+//        	}
+//        	addWord(n.mid);  
+        	
+        	
+        	
+//    	// if adding word that already exists in dict and just changing wordEnding of a letter
+//    	} else if (status == wordToAdd.length()-1 && 
+////        		n.mid != null &&
+//        		compareChars(wordToAdd.charAt(status), n.letter) == 0) {
+//        	n.wordEnd = true;
+//        	return;
+        	
+        	
+        	
+//        // if adding word that has duplicate letters that exists already
+//        } else if (status > 0 && 
+//        		compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
+//        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
+//        	if (n.mid == null) {
+//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+//        		status++;
+//        	} else {
+//        		status++;
+//        	}
+//        	addWord(n.mid);
+        	
+        	
+//        // if adding a character that is the same as one in dict and prev conditions not satisfied
+//        } else if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
+//        	status++;
+//        	if (n.mid == null) {
+//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
+//        		status++;
+//        	}
+//        	addWord(n.mid);
+        	
+        	
+        // if adding letter different than n.letter and node is alone
         } else if (!n.wordEnd && n.left == null && n.right == null && n.mid == null) {
         	n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
     		status++;
