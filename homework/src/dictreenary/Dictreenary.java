@@ -127,7 +127,7 @@ public class Dictreenary implements DictreenaryInterface {
     		return;
     	// check if letter adding is name as n.letter
     	} else if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
-    		// check if letter are adding is last one in wordToAdd
+    		// check if letter adding is last one in wordToAdd
     		if (status == wordToAdd.length()-1) {
     			// check if wordToAdd is just one letter
     			if (wordToAdd.length() == 1) {
@@ -144,7 +144,7 @@ public class Dictreenary implements DictreenaryInterface {
     	        		return;
     	        	}
     	        	addWord(n.mid);
-    	        	return; //********
+    	        	return;
     			}
     			n.wordEnd = true;
             	return;
@@ -160,7 +160,7 @@ public class Dictreenary implements DictreenaryInterface {
     	        		status++;
     	        	}
     	        	addWord(n.mid);
-    	        	return; //********
+    	        	return;
     			}
     		}
     		// if adding a letter that is the same as n.letter and no prev conditions met
@@ -170,60 +170,8 @@ public class Dictreenary implements DictreenaryInterface {
         		status++;
         	}
         	addWord(n.mid);
-        	return; //********
-    	
-    	
-    	
-    		
-    		
-    		
-    	
-//    	// if adding word that has duplicate letters at end
-//    	} else if (status == wordToAdd.length()-1 && 
-//    			compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
-//        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
-//        	if (n.mid == null) {
-//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-//        		status++;
-//        	} else {
-//        		status++;
-//        	}
-//        	addWord(n.mid);  
-        	
-        	
-        	
-//    	// if adding word that already exists in dict and just changing wordEnding of a letter
-//    	} else if (status == wordToAdd.length()-1 && 
-////        		n.mid != null &&
-//        		compareChars(wordToAdd.charAt(status), n.letter) == 0) {
-//        	n.wordEnd = true;
-//        	return;
-        	
-        	
-        	
-//        // if adding word that has duplicate letters that exists already
-//        } else if (status > 0 && 
-//        		compareChars(wordToAdd.charAt(status), n.letter) == 0 &&
-//        		compareChars(wordToAdd.charAt(status), wordToAdd.charAt(status-1)) == 0) {
-//        	if (n.mid == null) {
-//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-//        		status++;
-//        	} else {
-//        		status++;
-//        	}
-//        	addWord(n.mid);
-        	
-        	
-//        // if adding a character that is the same as one in dict and prev conditions not satisfied
-//        } else if (compareChars(wordToAdd.charAt(status), n.letter) == 0) {
-//        	status++;
-//        	if (n.mid == null) {
-//        		n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
-//        		status++;
-//        	}
-//        	addWord(n.mid);
-        	
-        	
+        	return;
+   
         // if adding letter different than n.letter and node is alone
         } else if (!n.wordEnd && n.left == null && n.right == null && n.mid == null) {
         	n.mid = new TTNode(wordToAdd.charAt(status), checkWordEnd());
@@ -253,10 +201,6 @@ public class Dictreenary implements DictreenaryInterface {
     	isValid = n.wordEnd;
     	if (compareChars(wordToCheck.charAt(status), n.letter) == 0) {
     		status++; 
-    		return (hasWord(n.mid));
-    	}
-    	if (n.mid != null && compareChars(wordToCheck.charAt(status), n.mid.letter) == 0) {
-    		status++;
     		return (hasWord(n.mid));
     	}
     	if (compareChars(wordToCheck.charAt(status), n.letter) < 0) {
