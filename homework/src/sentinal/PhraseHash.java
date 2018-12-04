@@ -43,13 +43,14 @@ public class PhraseHash implements PhraseHashInterface {
     public void put (String s) {
     	int index = hash(s);
     	checkAndGrow();
-    	if (buckets[index].equals(s)) { return; }
-    	size++;
-    	String[] wordCount = s.split("\\s+");
-    	if (wordCount.length > longest) {
-    		longest = size;
+    	if (buckets[index] == null) {
+    		size++;
+        	String[] wordCount = s.split("\\s+");
+        	if (wordCount.length > longest) {
+        		longest = size;
+        	}
+        	buckets[index] = s;
     	}
-    	buckets[index] = s;
     }
 
     public String get (String s) {
@@ -73,19 +74,19 @@ public class PhraseHash implements PhraseHashInterface {
     	int hashCode = 0;
     	byte[] strByte = s.getBytes();
 		for (int i = 0; i < strByte.length; i++) {
-			hashCode += Byte.toUnsignedInt(strByte[i]) * (s.length() - i);
+			hashCode += Byte.toUnsignedInt(strByte[i]) * (i);
 		}
-		return hashCode;
+		return hashCode % buckets.length;
     }
 
     private void checkAndGrow () {
         if (size/buckets.length > LOAD_MAX) {
-        	String[] temp = new String[buckets.length * 2];
-        	for (int i = 0; i < buckets.length; i++) {
-        		temp[i] = buckets[i];
+        	String[] temp = buckets;
+        	buckets = new String[temp.length * 2];
+        	for (int i = 0; i < temp.length; i++) {
+        		put(temp[i]);
         	}
         	buckets = temp;
         }
     }
-
 }

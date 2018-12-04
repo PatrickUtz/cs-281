@@ -27,11 +27,20 @@ public class Sentinal implements SentinalInterface {
     // -----------------------------------------------------------
 
     public void loadSentiment (String phrase, boolean positive) {
-        throw new UnsupportedOperationException();
+        if (positive) {
+        	posHash.put(phrase);
+        	return;
+        }
+        negHash.put(phrase);
     }
 
     public void loadSentimentFile (String filename, boolean positive) throws FileNotFoundException {
-        throw new UnsupportedOperationException();
+        Scanner reader = new Scanner(new File(filename));
+        while (reader.hasNextLine()) {
+        	loadSentiment(reader.nextLine(), positive);
+        }
+        loadSentiment(reader.nextLine(), positive);
+        reader.close();
     }
 
     public String sentinalyze (String filename) throws FileNotFoundException {

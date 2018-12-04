@@ -139,7 +139,7 @@ public class GeneralTests {
 //		test.start();
 //		System.out.println(count);
 		
-		String strTest = "with little regard for quality";
+		String strTest = "good";
 		String[] strArray = new String[5];
 		if (strArray[1] == null || !strArray[1].equals(strTest)) {
 			System.out.println("False");
@@ -147,7 +147,7 @@ public class GeneralTests {
 		byte[] strByte = strTest.getBytes();
 		int hashCode = 0;
 		for (int i = 0; i < strByte.length; i++) {
-			hashCode += Byte.toUnsignedInt(strByte[i]) * (strTest.length() - i);
+			hashCode += Byte.toUnsignedInt(strByte[i]) * (i);
 		}
 		System.out.println(hashCode);
 	}
