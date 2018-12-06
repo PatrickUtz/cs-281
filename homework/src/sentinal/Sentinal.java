@@ -18,7 +18,10 @@ public class Sentinal implements SentinalInterface {
     // -----------------------------------------------------------
 
     Sentinal (String posFile, String negFile) throws FileNotFoundException {
-        // TODO: load files into PhraseHash fields appropriately
+    	posHash = new PhraseHash();
+    	negHash = new PhraseHash();
+    	loadSentimentFile(posFile, true);
+        loadSentimentFile(negFile, false);
     }
 
 
@@ -35,23 +38,52 @@ public class Sentinal implements SentinalInterface {
     }
 
     public void loadSentimentFile (String filename, boolean positive) throws FileNotFoundException {
-        Scanner reader = new Scanner(new File(filename));
+        Scanner reader = new Scanner(new File (filename));
         while (reader.hasNextLine()) {
         	loadSentiment(reader.nextLine(), positive);
         }
-        loadSentiment(reader.nextLine(), positive);
         reader.close();
     }
 
     public String sentinalyze (String filename) throws FileNotFoundException {
-        throw new UnsupportedOperationException();
+        int count = 0;
+        Scanner reader = new Scanner(new File (filename));
+        while (reader.hasNextLine()) {
+        	count += count(filename, true);
+        	count -= count(filename, false);
+        	reader.nextLine();
+        }
+        reader.close();
+        
+        if ( count != 0 ) {
+        	return count > 0 ? "positive" : "negative"; 
+        }
+        return "neutral";
     }
-
-
-    // -----------------------------------------------------------
-    // Helper Methods
-    // -----------------------------------------------------------
-
-    // TODO: add your helper methods here!
-
+    
+    private int count (String filename, boolean positive) throws FileNotFoundException {
+    	int count = 0;
+    	PhraseHash hash = positive ? posHash : negHash;
+    	Scanner reader = new Scanner(new File(filename));
+    	for (int index = 0; reader.hasNext(); index++, reader.next()) {
+    		Scanner innerReader = new Scanner(new File(filename));
+    		for (int s = 0; s < index; s++) {
+    			innerReader.next();
+    		}
+    		String test = "";
+    		for (int i = 0; i < hash.longestLength() && innerReader.hasNext(); i++) {
+    			if (test.equals("")) {
+    				test = innerReader.next();
+    			} else {
+    				test = test + " " + innerReader.next();
+    			}
+    			if (hash.get(test) != null) {
+    				count++;
+    			}
+    		}
+    		innerReader.close();
+    	}
+    	reader.close();
+    	return count;
+    }
 }

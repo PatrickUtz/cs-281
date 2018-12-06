@@ -122,33 +122,71 @@ public class GeneralTests {
 		demo = new String();
 	}
 	
+	public String oddNum (String num) {
+		int totalNum;
+		int sumCount = 0;
+		String origNum = num;
+		String reverseNum = reverseNum(num);		
+		totalNum = Integer.parseInt(reverseNum) + Integer.parseInt(origNum);
+		sumCount++;
+		while (!checkOdd(Integer.toString(totalNum))) {
+			origNum = Integer.toString(totalNum);
+			reverseNum = reverseNum(origNum);		
+			totalNum = Integer.parseInt(reverseNum) + Integer.parseInt(origNum);
+			sumCount++;
+		}
+		return sumCount + " " + Integer.toString(totalNum);
+	}
+	
+	private boolean checkOdd (String numToCheck) {
+		for (int i = 0; i < numToCheck.length(); i++) {
+			if (Character.getNumericValue(numToCheck.charAt(i))%2 == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private String reverseNum (String numToReverse) {
+		String revNum = "";
+		for (int i = 0; i < numToReverse.length(); i++) {
+			revNum = numToReverse.charAt(i) + revNum;
+		}
+		return revNum;
+	}
+	
 	public static void main (String[] args) {
-//		GeneralTests test = new GeneralTests();
-//		int[] testInput = {1, 2, 3, 4, 5};
-//		test.leftRotation(testInput, 2);
-//		System.out.println(GeneralTests.betterMergeStrings("a", "begegegeg"));
-//		int[] testIntArr = {7, 2, 3, 10, 2, 4, 8, 1};
-//		System.out.println(GeneralTests.betterMaxDifference(testIntArr));
-//		System.out.println(9%8);
-//		char ch = 0;
-//		int count = 0;
-//		while (++ch <= 255) {
-//			count++;
-//		}
-//		System.out.println(count);
-//		test.start();
-//		System.out.println(count);
+		GeneralTests test = new GeneralTests();
+		int[] testInput = {1, 2, 3, 4, 5};
+		test.leftRotation(testInput, 2);
+		System.out.println(GeneralTests.betterMergeStrings("a", "begegegeg"));
+		int[] testIntArr = {7, 2, 3, 10, 2, 4, 8, 1};
+		System.out.println(GeneralTests.betterMaxDifference(testIntArr));
+		System.out.println(9%8);
+		char ch = 0;
+		int count = 0;
+		while (++ch <= 255) {
+			count++;
+		}
+		System.out.println(count);
+		test.start();
+		System.out.println(count);
 		
-		String strTest = "good";
-		String[] strArray = new String[5];
-		if (strArray[1] == null || !strArray[1].equals(strTest)) {
-			System.out.println("False");
-		}
-		byte[] strByte = strTest.getBytes();
-		int hashCode = 0;
-		for (int i = 0; i < strByte.length; i++) {
-			hashCode += Byte.toUnsignedInt(strByte[i]) * (i);
-		}
-		System.out.println(hashCode);
+		String number = "22e";
+		GeneralTests testery = new GeneralTests();
+		System.out.println(testery.oddNum(number));
+		
+		
+//		String strTest = "good";
+//		String[] strArray = new String[5];
+//		if (strArray[1] == null || !strArray[1].equals(strTest)) {
+//			System.out.println("False");
+//		}
+//		byte[] strByte = strTest.getBytes();
+//		int hashCode = 0;
+//		for (int i = 0; i < strByte.length; i++) {
+//			hashCode += Byte.toUnsignedInt(strByte[i]) * (i);
+//		}
+//		System.out.println(hashCode);
 	}
 }
